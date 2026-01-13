@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Day 4&colon; React&#x7248;&#x672c;&#x4fe1;&#x606f;&#x4e0e;&#x6784;&#x5efa;&#x8c03;&#x8bd5;&#x5165;&#x95e8;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="day-4-react版本信息与构建调试入门">Day 4: React版本信息与构建调试入门</h1>
+<h2 id="今日学习-todays-learning">今日学习 (Today's Learning)</h2>
+<ul>
+<li><strong>核心概念</strong>: React API的分组、构建流程、版本信息</li>
+<li><strong>重点文件</strong>: <code>packages/react/src/ReactClient.js</code> (31-136行)、<code>scripts/rollup/build.js</code> (前50行)</li>
+</ul>
+<h2 id="源码理解-source-code-understanding">源码理解 (Source Code Understanding)</h2>
+<h3 id="文件-packagesreactsrcreactclientjs">文件: packages/react/src/ReactClient.js</h3>
+<ul>
+<li><strong>作用</strong>: React客户端入口文件，导出所有React API</li>
+<li><strong>关键函数</strong>: export语句组织React API</li>
+<li><strong>核心逻辑</strong>:
+<ul>
+<li><strong>导入阶段</strong> (第31-67行): 从各个模块导入Hooks、组件类、工具函数等</li>
+<li><strong>Children对象</strong> (第69-75行): 包装Children相关的工具函数</li>
+<li><strong>导出阶段</strong> (第77-136行): 按功能分组导出React API</li>
+</ul>
+</li>
+</ul>
+<h3 id="react-api的分组方式">React API的分组方式</h3>
+<h4 id="1-核心组件和类-78-85行">1. <strong>核心组件和类</strong> (78-85行)</h4>
+<pre><code class="language-javascript"><span class="hljs-title class_">Children</span>,
+createRef,
+<span class="hljs-title class_">Component</span>,
+<span class="hljs-title class_">PureComponent</span>,
+createContext,
+forwardRef,
+lazy,
+memo,
+</code></pre>
+<ul>
+<li>用于创建组件和引用</li>
+</ul>
+<h4 id="2-hooks-88-102行">2. <strong>Hooks</strong> (88-102行)</h4>
+<pre><code class="language-javascript">useCallback,
+useContext,
+useEffect,
+useReducer,
+useRef,
+useState,
+<span class="hljs-comment">// ... 更多Hooks</span>
+</code></pre>
+<ul>
+<li>React 16.8+ 引入的函数式编程工具</li>
+</ul>
+<h4 id="3-元素类型-103-109行">3. <strong>元素类型</strong> (103-109行)</h4>
+<pre><code class="language-javascript"><span class="hljs-variable constant_">REACT_FRAGMENT_TYPE</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">Fragment</span>,
+<span class="hljs-variable constant_">REACT_PROFILER_TYPE</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">Profiler</span>,
+<span class="hljs-variable constant_">REACT_STRICT_MODE_TYPE</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">StrictMode</span>,
+<span class="hljs-variable constant_">REACT_SUSPENSE_TYPE</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">Suspense</span>,
+createElement,
+cloneElement,
+isValidElement,
+</code></pre>
+<ul>
+<li>基础React元素和操作</li>
+</ul>
+<h4 id="4-并发特性-114-131行">4. <strong>并发特性</strong> (114-131行)</h4>
+<pre><code class="language-javascript">useTransition,
+startTransition,
+useDeferredValue,
+<span class="hljs-comment">// ... unstable_* 前缀的特性</span>
+</code></pre>
+<ul>
+<li>React 18+ 的并发渲染特性</li>
+</ul>
+<h4 id="5-版本信息-110行">5. <strong>版本信息</strong> (110行)</h4>
+<pre><code class="language-javascript"><span class="hljs-title class_">ReactVersion</span> <span class="hljs-keyword">as</span> version
+</code></pre>
+<h4 id="6-开发工具-133-135行">6. <strong>开发工具</strong> (133-135行)</h4>
+<pre><code class="language-javascript">useId,
+act,
+captureOwnerStack
+</code></pre>
+<ul>
+<li>仅在开发环境使用</li>
+</ul>
+<h3 id="文件-scriptsrollupbuildjs">文件: scripts/rollup/build.js</h3>
+<ul>
+<li><strong>作用</strong>: React构建系统的核心脚本</li>
+<li><strong>关键配置</strong>:
+<ul>
+<li><strong>第30行</strong>: <code>RELEASE_CHANNEL = process.env.RELEASE_CHANNEL</code></li>
+<li><strong>第34-37行</strong>: 默认experimental模式</li>
+</ul>
+</li>
+<li><strong>核心逻辑</strong>:
+<ul>
+<li>使用Rollup进行模块打包</li>
+<li>支持多种构建目标（node_dev, node_prod, fb_www等）</li>
+<li>处理Flow类型移除和代码压缩</li>
+</ul>
+</li>
+</ul>
+<h2 id="实践验证-practical-verification">实践验证 (Practical Verification)</h2>
+<h3 id="1-构建过程观察">1. 构建过程观察</h3>
+<pre><code class="language-bash"><span class="hljs-comment"># 构建命令</span>
+yarn build
+
+<span class="hljs-comment"># 构建产物目录结构</span>
+build/
+├── node_modules/
+│   ├── react/          <span class="hljs-comment"># 204K</span>
+│   ├── react-dom/      <span class="hljs-comment"># 3.2M</span>
+│   └── ...
+├── facebook-www/       <span class="hljs-comment"># Meta内部构建</span>
+└── facebook-react-native/ <span class="hljs-comment"># React Native构建</span>
+</code></pre>
+<h3 id="2-版本信息">2. 版本信息</h3>
+<ul>
+<li><strong>当前版本</strong>: <code>19.1.4-canary-0e3e1e37-20260106</code></li>
+<li><strong>39个导出API</strong> (不包括内部变量)</li>
+</ul>
+<h3 id="3-开发和生产版本对比">3. 开发和生产版本对比</h3>
+<p><strong>开发版本 (react.development.js)</strong>:</p>
+<ul>
+<li>包含警告和错误检查</li>
+<li>代码未压缩</li>
+<li>包含调试辅助代码</li>
+</ul>
+<p><strong>生产版本 (react.production.js)</strong>:</p>
+<ul>
+<li>移除所有警告</li>
+<li>代码压缩</li>
+<li>更小的文件体积</li>
+</ul>
+<h3 id="4-测试验证">4. 测试验证</h3>
+<pre><code class="language-bash"><span class="hljs-comment"># 运行JSX测试</span>
+yarn <span class="hljs-built_in">test</span> -- --testPathPattern=<span class="hljs-string">&quot;ReactJSXElementValidator&quot;</span> --verbose
+
+<span class="hljs-comment"># 结果: 14个测试全部通过</span>
+</code></pre>
+<h2 id="源码理解-source-code-understanding-1">源码理解 (Source Code Understanding)</h2>
+<h3 id="react-api的组织方式">React API的组织方式</h3>
+<p>React将API按功能分组：</p>
+<ol>
+<li><strong>基础组件</strong> - Component, PureComponent, Fragment等</li>
+<li><strong>Refs和引用</strong> - createRef, forwardRef</li>
+<li><strong>Hooks</strong> - 所有use*函数</li>
+<li><strong>并发特性</strong> - useTransition, startTransition等</li>
+<li><strong>工具函数</strong> - Children, createElement等</li>
+<li><strong>开发工具</strong> - act, useId等</li>
+</ol>
+<h3 id="导出命名规则">导出命名规则</h3>
+<ul>
+<li><strong>别名导出</strong>: <code>ReactVersion as version</code> - 统一对外接口</li>
+<li><strong>实验性特性</strong>: <code>unstable_*</code> 前缀 - 标记不稳定API</li>
+<li><strong>开发专用</strong>: <code>experimental_*</code> 前缀 - 开发环境专用</li>
+</ul>
+<h2 id="疑问点-questions">疑问点 (Questions)</h2>
+<ul>
+<li>React如何管理不同release channel的构建？</li>
+<li>Flow类型在构建过程中如何处理？</li>
+<li>source map如何帮助调试？</li>
+</ul>
+<h2 id="构建调试要点-build-debugging-tips">构建调试要点 (Build Debugging Tips)</h2>
+<ol>
+<li><strong>构建产物</strong>: 位于<code>build/</code>目录，按channel分组</li>
+<li><strong>开发vs生产</strong>: 使用不同环境变量控制</li>
+<li><strong>测试验证</strong>: 使用<code>yarn test</code>运行相关测试</li>
+<li><strong>版本检查</strong>: 通过<code>React.version</code>验证构建结果</li>
+</ol>
+<h2 id="明日任务-tomorrows-tasks">明日任务 (Tomorrow's Tasks)</h2>
+<ul>
+<li>学习JSX基础 - createElement函数</li>
+<li>深入理解Element的基本结构</li>
+<li>掌握JSX到JavaScript的转换过程</li>
+</ul>
+
+            
+            
+        </body>
+        </html>
